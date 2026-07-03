@@ -1,7 +1,7 @@
 {
-  "name": "坤驊房仲 AI Pro V8.1",
+  "name": "坤驊房仲 AI Pro V9",
   "short_name": "房仲AIPro",
-  "start_url": "./index.html?v=8.1.0",
+  "start_url": "./index.html?v=9.0.0",
   "display": "standalone",
   "background_color": "#f4f8f7",
   "theme_color": "#06483f",

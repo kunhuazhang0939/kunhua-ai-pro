@@ -1,17 +1,16 @@
-# 坤驊房仲 AI Pro V8.2 真人名片版
+# 坤驊房仲 AI Pro V9 Professional 正式版
 
 本版重點：
-- 使用張坤驊、王詩芸原始人物照片，不使用 AI 重畫人像。
-- 首頁可選擇張坤驊、王詩芸、聯名模式。
-- 名片主頁包含電話、LINE、地址、安傢企業社、統一編號、112登字。
-- 各自 LINE QR Code 已放入。
-- 保留買方試算、賣方試算、收入反推、貸款比較。
-- 更新 Service Worker 快取版本，避免手機吃舊版。
 
-GitHub Commit 建議：
-V8.2 更新：真人名片照片版
+- 保留原本買方試算、賣方試算、收入反推、貸款比較。
+- APP 內名片改用正式精品名片圖。
+- 分享名片改為純電子名片頁，不會顯示試算功能。
+- 獨立名片頁：
+  - card/kunhua.html
+  - card/shiyun.html
+  - card/team.html
+- 更新 Service Worker 快取版本，手機較容易更新。
 
+GitHub 上傳方式：解壓縮後，將 assets、card、icons、index.html、style.css、script.js、sw.js、manifest.webmanifest、README.md 全部拖到 GitHub Upload files。不要上傳 ZIP。
 
-## V8.2.1
-- 修正桌面 Chrome 點「分享名片」可能導致頁面崩潰的問題。
-- 分享改為複製名片連結，避免 Web Share API 相容性問題。
+Commit 建議：V9 正式版：精品名片系統

@@ -5,7 +5,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 @media(max-width:640px){.hero h1,.appbar h1{font-size:22px}.switch-btn{font-size:12px;padding:9px}.role-card{grid-template-columns:94px 1fr 20px}.role-card img{width:90px;height:90px}.role-card b{font-size:24px}.role-card small{font-size:14px}.dual-mini{width:94px;height:90px}.dual-mini img{width:54px;height:86px}.business-card{grid-template-columns:1fr;min-height:0}.business-card .card-photo{order:1;height:250px;padding:0}.business-card .card-info{order:2;padding:18px 18px 88px}.business-card.joint{grid-template-columns:1fr}.agent-name{font-size:34px}.card-logo{font-size:23px}.grid,.result-grid{grid-template-columns:1fr}.function-grid,.quick-actions{grid-template-columns:repeat(4,1fr);gap:8px}.quick-actions span,.func-btn span{font-size:12px}.func-btn{font-size:24px}.card-photo img{max-height:none}.business-card.joint .card-photo{height:250px}.business-card.joint .card-photo img{width:50%;height:100%}}
 @media print{.role-screen,.appbar,.quick-actions,.function-menu,.tabs,.page,.bottom-nav,.note{display:none!important}.app-main{padding:0}.business-card{box-shadow:none}}
 
-/* V8.2 真人名片照片優化：使用原始照片，不重繪人像 */
+/* V9 精品名片正式版 */
 .card-photo img{filter:none!important;}
 .role-card img,.dual-mini img{filter:none!important;}
 @media(max-width:640px){
@@ -13,3 +13,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
   .business-card .card-photo{height:270px;}
   .business-card.joint .card-photo{height:270px;}
 }
+
+
+/* V9 精品名片：APP 內顯示整張正式名片圖 */
+.business-card-image{background:#0a3e62;border-radius:22px;box-shadow:var(--shadow);overflow:hidden;border:0;padding:0;line-height:0;}
+.business-card-image img{display:block;width:100%;height:auto;object-fit:contain;}
+.role-card b .reg-inline{font-size:13px;font-weight:800;color:#4b5a56;margin-left:5px;}
+@media(max-width:640px){.business-card-image{border-radius:16px}.app-main{padding-top:10px}}
