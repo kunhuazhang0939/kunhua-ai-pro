@@ -1,12 +1,20 @@
 {
-  "name": "坤驊房仲 AI Pro V9",
-  "short_name": "房仲AIPro",
+  "name": "房仲 AI Pro V11.4.1 報稅用語修正版",
+  "short_name": "房仲AI V11.4.1",
   "start_url": "./index.html?v=9.0.0",
   "display": "standalone",
   "background_color": "#f4f8f7",
   "theme_color": "#06483f",
   "icons": [
-    {"src":"icons/icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"icons/icon-512.png","sizes":"512x512","type":"image/png"}
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }

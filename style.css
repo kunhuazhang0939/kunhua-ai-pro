@@ -20,3 +20,148 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,B
 .business-card-image img{display:block;width:100%;height:auto;object-fit:contain;}
 .role-card b .reg-inline{font-size:13px;font-weight:800;color:#4b5a56;margin-left:5px;}
 @media(max-width:640px){.business-card-image{border-radius:16px}.app-main{padding-top:10px}}
+
+
+/* V10.0 Release 2：專業分享系統 */
+.share-modal-card{text-align:left;max-height:90vh;overflow:auto}.share-help{color:var(--muted);font-weight:700;line-height:1.55;padding-right:32px}.share-presets{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px;margin:12px 0}.share-presets button,.share-actions button{border:0;border-radius:13px;padding:12px;background:#eaf7f3;color:var(--green);font-weight:950}.share-options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.share-check{background:#f6fbf9;border:1px solid #d6e8e3;padding:10px 12px;border-radius:12px;display:flex;align-items:center;gap:9px}.share-check input{width:22px;height:22px;margin:0;accent-color:var(--green)}.share-check span{font-size:15px}.share-preview-wrap{margin-top:14px}.share-preview-wrap pre{white-space:pre-wrap;word-break:break-word;background:#f2f6f5;border:1px solid #dce8e5;border-radius:14px;padding:14px;line-height:1.65;max-height:260px;overflow:auto;font-family:inherit}.share-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.share-actions button:first-child{background:var(--green);color:#fff}.share-actions button:last-child{background:#f97316;color:#fff}@media(max-width:640px){.share-options{grid-template-columns:1fr}.share-modal-card{padding:18px 14px}.share-actions{grid-template-columns:1fr}}
+
+
+/* V10.0 Release 3：AI 租賃中心 */
+.function-grid{grid-template-columns:repeat(5,1fr)}
+.rental-hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;background:linear-gradient(135deg,#fff,#edf9f5)}
+.rental-kicker{margin:0;color:#b78620;font-size:13px;font-weight:950;letter-spacing:.08em}
+.rental-badge{background:#0f8a78;color:#fff;border-radius:999px;padding:9px 13px;font-weight:950;white-space:nowrap}
+.rental-switch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.rental-check,.toggle-line{display:flex;align-items:center;gap:10px;background:#eaf7f3}
+.rental-check input,.toggle-line input{width:24px;height:24px;margin:0;accent-color:var(--green)}
+.rental-check span,.toggle-line span{font-weight:950}
+.rental-tax-hint{margin-top:12px;padding:13px 15px;background:#eef7ff;border-left:5px solid #1682b6;border-radius:12px;color:#244c66;font-weight:750;line-height:1.6}
+.holding-title{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.toggle-line{border-radius:14px;padding:10px 12px;white-space:nowrap}
+.muted-fields{opacity:.48;filter:grayscale(.3)}
+.rental-results .rental-net-card{background:linear-gradient(135deg,#174575,#1682b6)}
+.rental-action-row{margin-top:14px}
+@media(max-width:640px){
+  .function-grid{grid-template-columns:repeat(3,1fr)}
+  .rental-hero,.holding-title{display:block}
+  .rental-badge,.toggle-line{display:inline-flex;margin-top:10px}
+  .rental-switch-grid{grid-template-columns:1fr}
+}
+
+/* Release 4 租賃稅務規則重製 */
+.section-head-inline{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.tax-rule-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.tax-rule-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fbfdff}
+.tax-rule-card>div{display:flex;justify-content:space-between;gap:8px;align-items:center}.tax-rule-card p{font-size:13px;color:var(--muted);line-height:1.55;margin:10px 0 0}
+.decision{border-radius:999px;padding:6px 9px;font-size:12px;font-weight:950;white-space:nowrap}.decision.yes{background:#daf4e8;color:#096b49}.decision.no{background:#eef2f6;color:#53677a}.decision.manual{background:#fff2ce;color:#8a6312}
+.annual-tax-note{margin-top:16px;padding:16px;background:#f5f0ff;border-left:5px solid #7355a8;border-radius:14px}.annual-tax-note h3{margin:0 0 8px}.annual-tax-note p{margin:0;line-height:1.7;color:#493d5a}
+@media(max-width:760px){.tax-rule-cards{grid-template-columns:1fr}.section-head-inline{display:block}}
+
+/* V10.0 Release 5：租賃雙方服務費 */
+.service-split-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.service-side{border:1px solid #dce7e3;border-radius:18px;padding:16px;background:#fbfdfc}
+.service-side h3{margin:0 0 12px}
+.landlord-side{border-top:5px solid #0f8a78}
+.tenant-side{border-top:5px solid #1682b6}
+.service-preview{margin-top:12px;padding:12px;background:#eef7ff;border-radius:12px}
+.service-preview small,.service-preview strong{display:block}
+.service-preview small{color:#61788a;margin-bottom:4px}
+@media(max-width:640px){.service-split-grid{grid-template-columns:1fr}}
+
+/* V10.0 Release 6：服務費獨立計算 */
+.service-note{margin-top:12px;padding:12px;background:#fff8df;border:1px solid #ead59a;border-radius:12px}
+.service-note small,.service-note strong{display:block}
+.service-note small{color:#846c2e;margin-bottom:5px}
+.service-note strong{color:#6e5518;line-height:1.45}
+
+/* V10.0 Release 7：租金扣繳門檻修正 */
+.rental-threshold-note{
+  margin-top:12px;padding:13px 15px;border-radius:14px;
+  background:#fff8df;border:1px solid #e7d392;display:grid;gap:5px
+}
+.rental-threshold-note b{color:#6f5718}
+.rental-threshold-note span{font-size:13px;color:#665b3d;line-height:1.45}
+
+/* V10.0 Release 8：租賃步驟式介面 */
+.wizard-panel{padding:20px}
+.wizard-progress{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.wizard-progress span{padding:9px 8px;border-radius:999px;background:#edf2f0;color:#75827e;font-size:12px;font-weight:900;text-align:center}
+.wizard-progress span.active{background:#0f8a78;color:#fff}
+.wizard-section{padding:14px 0;border-top:1px solid #e6eeeb}
+.wizard-section:first-of-type{border-top:0}
+.wizard-section h2{font-size:18px;margin:0 0 12px}
+.choice-grid{display:grid;gap:12px}
+.choice-grid.two{grid-template-columns:1fr 1fr}
+.choice-card{border:2px solid #d8e5e0;background:#fff;border-radius:18px;padding:18px;text-align:left;color:#173b35;cursor:pointer;transition:.18s}
+.choice-card b,.choice-card span{display:block}
+.choice-card b{font-size:18px}
+.choice-card span{margin-top:6px;color:#6f807a;font-size:13px}
+.choice-card.active{border-color:#0f8a78;background:linear-gradient(135deg,#eaf8f4,#fff);box-shadow:0 8px 22px rgba(15,138,120,.12)}
+.rent-decision-card{margin-top:12px;padding:14px 16px;background:#f4fbf8;border:1px solid #cfe8df;border-radius:15px;display:grid;gap:7px;font-weight:800;color:#245347}
+@media(max-width:640px){.wizard-progress{grid-template-columns:1fr 1fr}.choice-grid.two{grid-template-columns:1fr}.choice-card{padding:15px}}
+
+/* V10.0 Release 9：卡片點選修正 */
+.wizard-panel,.wizard-section,.choice-grid{position:relative;z-index:2}
+.choice-card{
+  position:relative;
+  z-index:3;
+  pointer-events:auto!important;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:manipulation;
+}
+.choice-card:hover{transform:translateY(-1px)}
+.choice-card:active{transform:scale(.99)}
+.choice-card.active::after{
+  content:"✓";
+  position:absolute;
+  right:14px;
+  top:12px;
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  background:#0f8a78;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:950;
+}
+
+/* V10.0 Release 10：門檻說明文字修正 */
+.rental-threshold-note span strong{color:#0f6f60}
+
+/* V11 Beta 1 */
+.wizard-progress{grid-template-columns:repeat(3,1fr)}
+.tax-auto-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.small-btn{width:auto!important;padding:10px 14px!important}
+.advanced-tax-panel{margin-top:16px;display:grid;gap:14px}
+.tax-group{padding:16px;border-radius:16px;border:1px solid #dce8e3;background:#fbfdfc}
+.tax-group h3{margin:0 0 12px}
+.tax-group label{display:block;margin-top:10px}
+.income-tax-group{border-left:5px solid #0f8a78}
+.nhi-tax-group{border-left:5px solid #1682b6}
+.vat-tax-group{border-left:5px solid #d49a28}
+@media(max-width:640px){.wizard-progress{grid-template-columns:1fr}.tax-auto-head{display:block}.small-btn{margin-top:10px}}
+
+
+/* V11.1 分段利率與寬限期時間軸 */
+.loan-timeline,.compare-stages{display:grid;gap:10px}.loan-stage{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 14px;border:1px solid #d8dee6;border-radius:12px;background:#fff}.loan-stage b{font-size:15px}.loan-stage span{font-weight:700}.loan-stage strong{font-size:17px}.loan-stage small{text-align:right;color:#68707a}.grace-stage{border-left:5px solid #d49a23}.amort-stage{border-left:5px solid #238a57}.compare-cards{display:grid;gap:16px}.compare-card{border:1px solid #d8dee6;border-radius:16px;padding:16px;background:#f9fbfc}.compare-card h3{margin-top:0}.compare-card p{margin-bottom:0}.compare-card .loan-stage{grid-template-columns:1fr auto}.compare-card .loan-stage strong{font-size:15px}@media(min-width:900px){.compare-cards{grid-template-columns:repeat(3,1fr)}}
+
+/* V11.2 貸款本金模式 */
+.calc-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}.mode-btn{border:1px solid #c9d8d3;background:#f7fbfa;color:#315e55;border-radius:14px;padding:12px;font-size:16px;font-weight:950;cursor:pointer}.mode-btn.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 5px 14px rgba(7,94,84,.2)}.mode-hint{margin:6px 2px 12px}.compare-basis{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;background:#eef8f5;border-left:5px solid var(--green);border-radius:13px;padding:12px 14px;margin:12px 0 16px}.compare-basis b{width:100%;color:var(--green)}.compare-basis span{background:#fff;border:1px solid #d7e8e3;border-radius:999px;padding:7px 11px;font-weight:850}@media(max-width:640px){.calc-mode-switch{grid-template-columns:1fr}.compare-basis{display:grid}.compare-basis b{width:auto}}
+
+
+/* V11.3 房東年度租賃所得稅 */
+.rent-income-tax-panel .grid{margin-top:12px}
+.rent-income-tax-panel label small{display:block;margin-top:5px;color:#6b7280;line-height:1.45}
+.tax-bracket-help{margin-top:14px;padding:14px;border-radius:14px;background:#f5f7ff;border:1px solid #dfe5ff;display:flex;flex-direction:column;gap:6px}
+.tax-bracket-help span{color:#475569;line-height:1.55}
+.annual-tax-result{margin-top:18px;padding:18px;border-radius:16px;background:#fffaf0;border:1px solid #f1d39a}
+.annual-tax-result h3{margin-top:0}
+.result-grid.compact{margin-top:12px}
+
+/* V11.4 租賃分享角色快速套用 */
+.share-presets .hidden{display:none!important}.share-presets button{min-height:44px}.share-preview-wrap pre{font-size:15px;line-height:1.72;background:#fbfdfc}.share-check:has(input:checked){border-color:#7fb9aa;background:#edf8f4}
+
+/* V11.5 calculation transparency */
+.tax-subnote{display:block;margin-top:7px;color:#7b6a4c;font-weight:700;line-height:1.45}.calc-details{margin-top:10px;border-top:1px dashed #d6c29d;padding-top:8px}.calc-details summary{cursor:pointer;color:#075e54;font-weight:900;list-style:none}.calc-details summary::-webkit-details-marker{display:none}.calc-body{margin-top:9px;padding:10px 12px;background:#fff;border-radius:10px;color:#40534e;font-weight:750;line-height:1.75}.calc-body small{color:#8a6b36}.ai-analysis-content{font-size:15px!important;line-height:1.65}.ai-line{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.16)}.ai-line:last-of-type{border-bottom:0}.ai-reminder{margin-top:9px;padding:9px 10px;background:rgba(255,255,255,.14);border-radius:10px}.ai-analysis-content strong{color:#fff}

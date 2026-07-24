@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#06483f">
-  <title>坤驊房仲 AI Pro V9</title>
-  <link rel="stylesheet" href="style.css?v=9.0.0">
+  <title>房仲 AI Pro V11.4.1｜報稅用語修正版</title>
+  <link rel="stylesheet" href="style.css?v=11.4.1">
   <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
@@ -58,15 +58,23 @@
           <button class="func-btn active" data-page="buyer" type="button">🏠<span>買方試算</span></button>
           <button class="func-btn" data-page="seller" type="button">🏘️<span>賣方試算</span></button>
           <button class="func-btn" data-page="income" type="button">💰<span>收入反推</span></button>
+          <button class="func-btn" data-page="rental" type="button">🏢<span>租賃中心</span></button>
           <button class="func-btn" data-page="compare" type="button">⚖️<span>貸款比較</span></button>
         </div>
       </section>
 
       <section id="buyer" class="page active">
-        <div class="panel"><h2>買方試算</h2><div class="grid">
+        <div class="panel"><h2>買方試算</h2>
+          <div class="calc-mode-switch" role="group" aria-label="貸款試算模式">
+            <button id="modeByPrice" class="mode-btn active" type="button" data-mode="price">依房價＋成數</button>
+            <button id="modeByPrincipal" class="mode-btn" type="button" data-mode="principal">直接輸入貸款本金</button>
+          </div>
+          <p id="loanModeHint" class="hint mode-hint">先輸入房價，再依貸款成數自動算出貸款本金。</p>
+          <div class="grid">
           <label>房價（萬元）<input id="price" type="number" value="2000"></label>
-          <label>貸款成數<select id="ltv"><option value="0.5">5成</option><option value="0.55">5.5成</option><option value="0.6">6成</option><option value="0.65">6.5成</option><option value="0.7">7成</option><option value="0.75">7.5成</option><option value="0.8" selected>8成</option></select></label>
-          <label>利率方案<select id="ratePreset"><option value="1.775" selected>新青安概估 1.775%</option><option value="2.06">一般首購 2.06%</option><option value="2.185">一般房貸 2.185%</option><option value="custom">自訂</option></select></label>
+          <label id="ltvWrap">貸款成數<select id="ltv"><option value="0.5">5成</option><option value="0.55">5.5成</option><option value="0.6">6成</option><option value="0.65">6.5成</option><option value="0.7">7成</option><option value="0.75">7.5成</option><option value="0.8" selected>8成</option></select></label>
+          <label id="principalWrap" class="hide">貸款本金（萬元）<input id="directPrincipal" type="number" value="1000"></label>
+          <label>利率方案<select id="ratePreset"><option value="qingan3" selected>新青安3.0（分段機動利率）</option><option value="2.06">一般首購 2.06%</option><option value="2.185">一般房貸 2.185%</option><option value="custom">自訂</option></select></label>
           <label>年利率（%）<input id="rate" type="number" step="0.001" value="1.775"></label>
           <label>貸款年限<select id="years"><option>30</option><option>35</option><option selected>40</option></select></label>
           <label>寬限期<select id="grace"><option value="0">無</option><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option></select></label>
@@ -76,8 +84,8 @@
           <label class="readonly">仲介費（自動）<input id="agentPreview" type="text" value="40 萬" readonly></label>
           <label>雜費/代書/保險（萬元）<input id="misc" type="number" value="5"></label>
         </div><button class="primary" type="button" onclick="calcAll()">立即試算</button></div>
-        <div class="panel result-grid"><div><b>貸款金額</b><span id="loanAmt">-</span></div><div><b>自備款</b><span id="downPay">-</span></div><div><b>寬限期月付</b><span id="ioPay">-</span></div><div><b>寬限期後月付</b><span id="mPay">-</span></div><div class="wide"><b>建議準備現金</b><span id="cashNeed">-</span></div><div><b>建議家庭月收入</b><span id="needIncome">-</span></div></div>
-        <div class="panel action-row"><button type="button" onclick="copyBuyer()">複製 LINE 試算</button><button type="button" onclick="window.print()">列印 / 存 PDF</button></div>
+        <div class="panel result-grid"><div><b>貸款金額</b><span id="loanAmt">-</span></div><div><b>自備款</b><span id="downPay">-</span></div><div><b>寬限期月付</b><span id="ioPay">-</span></div><div><b>寬限期結束首期</b><span id="mPay">-</span></div><div class="wide"><b>建議準備現金</b><span id="cashNeed">-</span></div><div><b>建議家庭月收入（依最高月付）</b><span id="needIncome">-</span></div></div><div class="panel"><h3>貸款月付時間軸</h3><p class="hint">寬限期內只繳利息；寬限期結束或利率調整時，會依剩餘本金與剩餘期數重新計算。</p><div id="buyerLoanTimeline" class="loan-timeline"></div></div>
+        <div class="panel action-row"><button type="button" onclick="openShareSettings('buyer')">分享試算結果</button><button type="button" onclick="window.print()">列印 / 存 PDF</button></div>
       </section>
 
       <section id="seller" class="page"><div class="panel"><h2>賣方實拿概估</h2><div class="grid">
@@ -90,22 +98,351 @@
         <label>稅費概估（萬元）<input id="sellerTax" type="number" value="30"></label>
         <label>代書/塗銷雜費（萬元）<input id="sellerMisc" type="number" value="3"></label>
       </div><button class="primary" type="button" onclick="calcAll()">立即試算</button></div>
-      <div class="panel result-grid"><div><b>仲介費</b><span id="sellerFee">-</span></div><div><b>稅費概估</b><span id="sellerTaxShow">-</span></div><div><b>清償貸款</b><span id="mortShow">-</span></div><div class="wide"><b>屋主實拿概估</b><span id="sellerNet">-</span></div></div></section>
+      <div class="panel result-grid"><div><b>仲介費</b><span id="sellerFee">-</span></div><div><b>稅費概估</b><span id="sellerTaxShow">-</span></div><div><b>清償貸款</b><span id="mortShow">-</span></div><div class="wide"><b>屋主實拿概估</b><span id="sellerNet">-</span></div></div><div class="panel action-row"><button type="button" onclick="openShareSettings('seller')">分享試算結果</button><button type="button" onclick="window.print()">列印 / 存 PDF</button></div></section>
 
-      <section id="income" class="page"><div class="panel"><h2>收入反推</h2><div class="grid">
+      <section id="income" class="page"><div class="panel"><h2>AI 購屋資金分析</h2><p class="hint">不只反推房價，也把頭期款、仲介費、契稅、代書與規費一起納入。</p><div class="grid">
         <label>家庭月收入（元）<input id="famIncome" type="number" value="150000"></label>
         <label>可用自備現金（萬元）<input id="cashOnHand" type="number" value="450"></label>
-        <label>可接受負債比<select id="dti"><option value="0.3">保守30%</option><option value="0.35" selected>標準35%</option><option value="0.4">積極40%</option></select></label>
+        <label>房貸壓力設定<select id="dti"><option value="0.3">保守30%</option><option value="0.35" selected>標準35%</option><option value="0.4">積極40%</option></select></label>
         <label>貸款成數<select id="ltv2"><option value="0.5">5成</option><option value="0.55">5.5成</option><option value="0.6">6成</option><option value="0.65">6.5成</option><option value="0.7">7成</option><option value="0.75">7.5成</option><option value="0.8" selected>8成</option></select></label>
-      </div><button class="primary" type="button" onclick="calcAll()">立即反推</button></div><div class="panel result-grid"><div class="wide"><b>建議最高總價</b><span id="maxPrice">-</span></div><div><b>可承受月付</b><span id="maxMonthly">-</span></div><div><b>預估貸款</b><span id="maxLoan">-</span></div><div><b>判斷</b><span id="incomeJudge">-</span></div></div></section>
+        <label>仲介費計算<select id="incomeAgentMode"><option value="0.01">1%</option><option value="0.02" selected>2%</option><option value="0.03">3%</option><option value="0.04">4%</option><option value="0.05">5%</option><option value="0.06">6%</option><option value="customRate">自行輸入%</option><option value="fixed">固定金額</option></select></label>
+        <label id="incomeAgentCustomRateWrap" class="hide">自訂仲介費率（%）<input id="incomeAgentCustomRate" type="number" value="2" step="0.1"></label>
+        <label id="incomeAgentFixedWrap" class="hide">固定仲介費（萬元）<input id="incomeAgentFixed" type="number" value="40"></label>
+        <label>契稅估算（萬元）<input id="incomeDeedAmount" type="number" value="15" step="0.5"></label>
+        <label>登記規費估算（萬元）<input id="incomeRegAmount" type="number" value="2" step="0.5"></label>
+        <label>印花稅估算（萬元）<input id="incomeStampAmount" type="number" value="1" step="0.5"></label>
+        <label>代書費（萬元）<input id="incomeScrivener" type="number" value="3" step="0.5"></label>
+        <label>其他預備金（萬元）<input id="incomeOther" type="number" value="2" step="0.5"></label>
+      </div><button class="primary" type="button" onclick="calcAll()">立即分析</button></div>
+      <div class="panel result-grid">
+        <div class="wide"><b>建議最高總價</b><span id="maxPrice">-</span></div>
+        <div><b>基本頭期款</b><span id="incomeDownPay">-</span></div>
+        <div><b>預估貸款</b><span id="maxLoan">-</span></div>
+        <div><b>可承受月付</b><span id="maxMonthly">-</span></div>
+        <div><b>仲介服務費</b><span id="incomeAgentFeeShow">-</span></div>
+        <div><b>契稅概估</b><span id="incomeDeedShow">-</span></div>
+        <div><b>登記規費</b><span id="incomeRegShow">-</span></div>
+        <div><b>印花稅</b><span id="incomeStampShow">-</span></div>
+        <div><b>代書／其他</b><span id="incomeFixedCostsShow">-</span></div>
+        <div class="wide"><b>建議準備現金</b><span id="incomeCashNeed">-</span></div>
+        <div><b>房貸壓力判斷</b><span id="incomeJudge">-</span></div>
+        <div class="wide"><b>專業建議</b><span id="incomeAdvice">-</span></div>
+      </div><div class="panel action-row"><button type="button" onclick="openShareSettings('income')">分享試算結果</button><button type="button" onclick="window.print()">列印 / 存 PDF</button></div></section>
 
-      <section id="compare" class="page"><div class="panel"><h2>貸款方案比較</h2><p class="hint">依買方試算的房價、成數、利率自動比較。</p><table><thead><tr><th>方案</th><th>寬限期月付</th><th>寬限期後月付</th></tr></thead><tbody id="compareBody"></tbody></table></div></section>
+
+      <section id="rental" class="page">
+        <div class="panel rental-hero">
+          <div>
+            <p class="rental-kicker">房仲現場快速試算</p>
+            <h2>🏢 AI 租賃中心</h2>
+            <p class="hint">先選情境，再輸入租金；一般民眾與公司行號會自動套用不同判斷。</p>
+          </div>
+          <span class="rental-badge">步驟式介面</span>
+        </div>
+
+        <div class="panel wizard-panel">
+          <div class="wizard-progress">
+            <span class="active">1 試算方式</span>
+            <span>2 出租人</span>
+            <span>3 承租人</span>
+          </div>
+
+          <div class="wizard-section">
+            <h2>STEP 1｜試算方式</h2>
+            <div class="choice-grid two">
+              <button class="choice-card active" type="button" data-rent-choice="mode" data-value="forward" onclick="setRentalChoice('mode','forward')">
+                <b>🧮 已知租金</b><span>計算屋主每月實拿</span>
+              </button>
+              <button class="choice-card" type="button" data-rent-choice="mode" data-value="reverse" onclick="setRentalChoice('mode','reverse')">
+                <b>🎯 已知房東想實拿多少</b><span>反推建議租金</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="wizard-section">
+            <h2>STEP 2｜出租人（房東）</h2>
+            <div class="choice-grid two">
+              <button class="choice-card active" type="button" data-rent-choice="landlord" data-value="individual" onclick="setRentalChoice('landlord','individual')">
+                <b>👤 個人房東</b><span>境內居住個人</span>
+              </button>
+              <button class="choice-card" type="button" data-rent-choice="landlord" data-value="company" onclick="setRentalChoice('landlord','company')">
+                <b>🏢 公司／行號</b><span>營業人出租</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="wizard-section">
+            <h2>STEP 3｜承租人（租客）</h2>
+            <div class="choice-grid two">
+              <button class="choice-card active" type="button" data-rent-choice="tenant" data-value="person" onclick="setRentalChoice('tenant','person')">
+                <b>👤 一般民眾</b><span>自然人承租</span>
+              </button>
+              <button class="choice-card" type="button" data-rent-choice="tenant" data-value="company" onclick="setRentalChoice('tenant','company')">
+                <b>🏢 公司行號</b><span>法人／商號承租</span>
+              </button>
+            </div>
+          </div>
+
+          <input id="rentCalcMode" type="hidden" value="forward">
+          <input id="rentLandlordType" type="hidden" value="individual">
+          <input id="rentTenantType" type="hidden" value="person">
+          <input id="rentTaxMethod" type="hidden" value="auto">
+        </div>
+
+        <div class="panel">
+          <h2>四、租賃條件</h2>
+          <div class="grid">
+            <label id="rentAmountWrap">每月租金（元）
+              <input id="rentAmount" type="number" value="20000" step="1000">
+            </label>
+            <label id="rentTargetWrap" class="hide">屋主希望每月實拿（元）
+              <input id="rentTargetNet" type="number" value="60000" step="1000">
+            </label>
+            <label>物件用途
+              <select id="rentUse">
+                <option value="residential" selected>住宅</option>
+                <option value="store">店面</option>
+                <option value="office">辦公室</option>
+                <option value="factory">廠房</option>
+                <option value="land">土地</option>
+              </select>
+            </label>
+            <label>租期（月）<input id="rentMonths" type="number" value="12" min="1"></label>
+            <label>押金（月）<input id="rentDepositMonths" type="number" value="2" min="0" step="0.5"></label>
+          </div>
+        </div>
+
+        <div class="panel tax-auto-panel">
+          <div class="tax-auto-head">
+            <div>
+              <h2>五、AI 稅務判斷</h2>
+              <p class="hint">系統依出租人、承租人與租金金額自動判斷；特殊案件再展開進階設定。</p>
+            </div>
+            <button id="toggleRentAdvanced" class="secondary small-btn" type="button">展開進階設定</button>
+          </div>
+
+          <div class="tax-rule-cards">
+            <div class="tax-rule-card">
+              <div><b>所得稅預扣</b><span id="rentWithholdDecision" class="decision">系統判斷中</span></div>
+              <p>公司行號承租且出租人為個人時，20,000 元整的 10% 為 2,000 元，未超過免扣上限；因此自 20,001 元起才需扣繳。</p>
+            </div>
+            <div class="tax-rule-card">
+              <div><b>二代健保補充保費</b><span id="rentNhiDecision" class="decision">系統判斷中</span></div>
+              <p>個人房東取得租金，單次給付達 20,000 元時，依目前設定以 2.11% 計算。</p>
+            </div>
+            <div class="tax-rule-card">
+              <div><b>營業稅</b><span id="rentVatDecision" class="decision manual">人工確認</span></div>
+              <p>依出租人稅籍、是否開立發票及契約約定確認。</p>
+            </div>
+          </div>
+
+          <div id="rentDecisionCard" class="rent-decision-card"></div>
+
+          <div id="rentAdvancedPanel" class="advanced-tax-panel hide">
+            <section class="tax-group income-tax-group">
+              <h3>所得稅預扣</h3>
+              <label class="rental-check"><input id="rentWithholdEnabled" type="checkbox" autocomplete="off"><span>納入所得稅預扣</span></label>
+              <label>預扣率（%）<input id="rentWithholdRate" type="number" value="10" step="0.1"></label>
+              <label>免扣稅額上限（元）<input id="rentWithholdExemptTax" type="number" value="2000" step="100"></label>
+            </section>
+
+            <section class="tax-group nhi-tax-group">
+              <h3>二代健保補充保費</h3>
+              <label class="rental-check"><input id="rentNhiEnabled" type="checkbox" autocomplete="off"><span>納入補充保費</span></label>
+              <label>補充保費率（%）<input id="rentNhiRate" type="number" value="2.11" step="0.01"></label>
+              <label>單次給付門檻（元）<input id="rentNhiThreshold" type="number" value="20000" step="1000"></label>
+            </section>
+
+            <section class="tax-group vat-tax-group">
+              <h3>營業稅</h3>
+              <label class="rental-check"><input id="rentVatEnabled" type="checkbox"><span>納入營業稅</span></label>
+              <label>營業稅率（%）<input id="rentVatRate" type="number" value="5" step="0.1"></label>
+            </section>
+
+            <div id="rentTaxHint" class="rental-tax-hint"></div>
+            <div class="rental-threshold-note">
+              <b>自動判斷規則</b>
+              <span>19,999 元以下：所得稅與補充保費皆不扣</span>
+              <span>20,000 元整：所得稅免扣；補充保費需扣</span>
+              <span>20,001 元以上：所得稅與補充保費皆需扣</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>六、仲介服務費（獨立計算，不扣屋主租金實拿）</h2>
+          <p class="hint">預設採房東 1 個月、租客 0.5 個月。服務費獨立顯示，不會扣除屋主每月租金實拿或持有成本後淨收入。</p>
+          <div class="service-split-grid">
+            <div class="service-side landlord-side">
+              <h3>🏠 房東服務費</h3>
+              <label>收費方式
+                <select id="rentLandlordServiceMode">
+                  <option value="0">0 個月</option>
+                  <option value="0.5">0.5 個月</option>
+                  <option value="1" selected>1 個月</option>
+                  <option value="1.5">1.5 個月</option>
+                  <option value="2">2 個月</option>
+                  <option value="fixed">自行輸入金額</option>
+                </select>
+              </label>
+              <label id="rentLandlordServiceFixedWrap" class="hide">固定金額（元）
+                <input id="rentLandlordServiceFixed" type="number" value="60000" step="1000">
+              </label>
+              <div class="service-note">
+                <small>計算方式</small>
+                <strong>服務費獨立列示，不從屋主租金收入扣除</strong>
+              </div>
+            </div>
+            <div class="service-side tenant-side">
+              <h3>👤 租客服務費</h3>
+              <label>收費方式
+                <select id="rentTenantServiceMode">
+                  <option value="0">0 個月</option>
+                  <option value="0.5" selected>0.5 個月</option>
+                  <option value="1">1 個月</option>
+                  <option value="1.5">1.5 個月</option>
+                  <option value="2">2 個月</option>
+                  <option value="fixed">自行輸入金額</option>
+                </select>
+              </label>
+              <label id="rentTenantServiceFixedWrap" class="hide">固定金額（元）
+                <input id="rentTenantServiceFixed" type="number" value="30000" step="1000">
+              </label>
+              <div class="service-preview">
+                <small>常用預設</small>
+                <strong>房東 1 個月＋租客 0.5 個月</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="holding-title">
+            <div><h2>七、持有成本分析（選用）</h2><p class="hint">房屋稅、地價稅等不屬每次租金扣款，僅在您勾選後納入投資淨收益分析。</p></div>
+            <label class="toggle-line"><input id="rentHoldingEnabled" type="checkbox"><span>納入持有成本</span></label>
+          </div>
+          <div id="rentHoldingFields" class="grid muted-fields">
+            <label>房屋稅（每年／元）<input id="rentHouseTaxAnnual" type="number" value="24000" step="1000"></label>
+            <label>地價稅（每年／元）<input id="rentLandTaxAnnual" type="number" value="6000" step="1000"></label>
+            <label>管理費（每月／元）<input id="rentManagement" type="number" value="0" step="500"></label>
+            <label>修繕預備金（每月／元）<input id="rentRepair" type="number" value="0" step="500"></label>
+            <label>其他固定支出（每月／元）<input id="rentOtherCost" type="number" value="0" step="500"></label>
+          </div>
+        </div>
+
+        <div class="panel rent-income-tax-panel">
+          <div class="holding-title">
+            <div>
+              <h2>八、房東年度報稅試算（選用）</h2>
+              <p class="hint">適用個人房東。所得稅級距應依「綜合所得淨額」判斷，不是直接看薪資或租金總收入。</p>
+            </div>
+            <label class="toggle-line"><input id="rentIncomeTaxEnabled" type="checkbox"><span>試算年度所得稅</span></label>
+          </div>
+          <div id="rentIncomeTaxFields" class="muted-fields">
+            <div class="grid">
+              <label>所得年度
+                <select id="rentTaxYear">
+                  <option value="115" selected>115年度（116年5月申報）</option>
+                  <option value="114">114年度（115年5月申報）</option>
+                </select>
+              </label>
+              <label>報稅扣除方式
+                <select id="rentExpenseMethod">
+                  <option value="standard43" selected>43%法定可扣除費用（房屋）</option>
+                  <option value="actual">實際支出／憑證</option>
+                </select>
+              </label>
+              <label id="rentActualExpenseWrap" class="hide">全年實際可舉證支出（元）
+                <input id="rentActualExpense" type="number" value="0" step="1000">
+              </label>
+              <label>本年度收租月數
+                <input id="rentIncomeMonths" type="number" value="12" min="1" max="12">
+              </label>
+              <label>其他綜合所得淨額（不含本案租賃所得）
+                <input id="rentOtherNetIncome" type="number" value="0" step="10000">
+                <small>請填免稅額與扣除額扣除後的所得淨額，不是年薪。</small>
+              </label>
+            </div>
+            <div class="tax-bracket-help">
+              <b>系統會用累進稅率計算「增加這筆租賃所得後，多出的所得稅」</b>
+              <span id="rentBracketSummary">115年度：61萬以下5%、61萬～138萬12%、138萬～277萬20%、277萬～519萬30%、519萬以上40%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel"><button class="primary" type="button" onclick="calcRental()">立即試算租賃結果</button></div>
+
+        <div class="panel rental-results">
+          <div class="result-grid">
+            <div class="wide"><b id="rentMainLabel">每月約定租金</b><span id="rentContractShow">-</span></div>
+            <div><b>所得稅預扣</b><span id="rentWithholdShow">-</span></div>
+            <div><b>補充保費</b><span id="rentNhiShow">-</span></div>
+            <div><b>營業稅</b><span id="rentVatShow">-</span></div>
+            <div><b>承租人總支付</b><span id="rentTenantPayShow">-</span></div>
+            <div class="wide"><b>屋主每月實拿</b><span id="rentOwnerNetShow">-</span></div>
+            <div><b>房東服務費</b><span id="rentServiceOwnerShow">-</span></div>
+            <div><b>租客服務費</b><span id="rentServiceTenantShow">-</span></div>
+            <div><b>仲介服務費合計</b><span id="rentServiceTotalShow">-</span></div>
+            <div><b>房東服務費（另計）</b><span id="rentServiceMonthlyShow">-</span></div>
+            <div><b>持有成本月平均</b><span id="rentHoldingMonthlyShow">-</span></div>
+            <div class="wide rental-net-card"><b>扣除持有成本後淨收入</b><span id="rentTrueNetShow">-</span></div>
+            <div><b>押金金額</b><span id="rentDepositShow">-</span></div>
+            <div><b>租客簽約準備金</b><span id="rentTenantInitialShow">-</span></div>
+            <div><b>簽約當下屋主租金現金流</b><span id="rentSigningCashShow">-</span></div>
+            <div class="wide ai-analysis-card"><b>🤖 AI分析與重要提醒</b><div id="rentAdviceShow" class="ai-analysis-content">-</div></div>
+          </div>
+
+          <div id="rentIncomeTaxResult" class="annual-tax-result hide">
+            <h3>🧾 房東年度報稅試算</h3>
+            <div class="result-grid compact">
+              <div><b>全年租金收入</b><span id="rentAnnualGrossShow">-</span></div>
+              <div><b>43%法定可扣除費用</b><span id="rentAnnualExpenseShow">-</span><small class="tax-subnote">依法可列報扣除，不代表房東實際支出。</small><details class="calc-details"><summary>📖 查看計算方式</summary><div id="rentExpenseCalcShow" class="calc-body">-</div></details></div>
+              <div><b>需申報的租賃所得</b><span id="rentTaxableRentalShow">-</span></div>
+              <div><b>適用邊際稅率</b><span id="rentMarginalRateShow">-</span></div>
+              <div><b>本案增加預估所得稅</b><span id="rentIncrementalTaxShow">-</span><details class="calc-details"><summary>📖 查看計算方式</summary><div id="rentIncomeTaxCalcShow" class="calc-body">-</div></details></div>
+              <div><b>全年預扣所得稅（扣繳稅款）</b><span id="rentAnnualWithheldShow">-</span><details class="calc-details"><summary>📖 查看計算方式</summary><div id="rentWithheldCalcShow" class="calc-body">-</div></details></div>
+              <div class="wide rental-net-card"><b>本案預扣稅款與估算稅額差額</b><span id="rentTaxBalanceShow">-</span></div>
+            </div>
+            <p id="rentIncomeTaxWarning" class="hint"></p>
+          </div>
+
+          <div class="annual-tax-note">
+            <h3>📌 年度所得申報提醒</h3>
+            <p>10% 扣繳屬預繳性質，不是房東最終所得稅。個人房東仍應於次年 5 月申報全年租賃所得；房屋出租如不逐項舉證，現行標準可將房屋租金收入的 43% 作為法定可扣除費用；這不代表房東實際支出，也不是免稅額，其餘 57% 列入租賃所得計算。僅土地出租不適用此 43% 標準。</p>
+          </div>
+
+          <div class="panel action-row rental-action-row"><button type="button" onclick="openShareSettings('rental')">分享租賃分析</button><button type="button" onclick="window.print()">列印 / 存 PDF</button></div>
+        </div>
+      </section>
+
+      <section id="compare" class="page"><div class="panel"><h2>貸款方案比較</h2><p class="hint">依買方試算目前的貸款本金與寬限期，比較30／35／40年；新青安3.0會逐段顯示利率與月付。</p><div id="compareBasis" class="compare-basis"></div><div id="compareBody" class="compare-cards"></div></div></section>
       <p class="note">本工具為現場快速概估，實際貸款、稅費與核貸條件仍以銀行、政府、代書與合約為準。</p>
     </main>
     <footer class="bottom-nav"><button type="button" class="active">⌂<span>首頁</span></button><button type="button">◴<span>歷史紀錄</span></button><button type="button">♡<span>收藏物件</span></button><button type="button">⚙<span>設定</span></button></footer>
   </section>
 
   <div id="qrModal" class="modal hidden"><div class="modal-card"><button id="closeQr" class="modal-close" type="button">×</button><div id="qrBody"></div></div></div>
-  <script src="script.js?v=9.0.0"></script>
+
+  <div id="shareModal" class="modal hidden"><div class="modal-card share-modal-card">
+    <button id="closeShare" class="modal-close" type="button">×</button>
+    <h3 id="shareModalTitle">分享試算結果</h3>
+    <p class="share-help">有勾選的項目才會分享給客戶；未勾選項目仍會正常參與內部計算。</p>
+    <div class="share-presets">
+      <button type="button" data-preset="simple">簡易分享</button>
+      <button type="button" data-preset="full">完整分享</button>
+      <button type="button" data-preset="landlord">🟢 房東版</button>
+      <button type="button" data-preset="tenant">🔵 房客版</button>
+      <button type="button" data-preset="company">🟠 公司承租版</button>
+      <button type="button" data-preset="professional">⚫ 專業版</button>
+      <button type="button" data-preset="custom">⚪ 自訂</button>
+    </div>
+    <div id="shareOptions" class="share-options"></div>
+    <div class="share-preview-wrap"><b>客戶預覽</b><pre id="sharePreview"></pre></div>
+    <div class="share-actions">
+      <button id="copyShareText" type="button">複製分享內容</button>
+      <button id="nativeShareText" type="button">直接分享</button>
+    </div>
+  </div></div>
+  <script src="script.js?v=11.4.1"></script>
 </body>
 </html>

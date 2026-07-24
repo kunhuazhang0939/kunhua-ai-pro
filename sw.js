@@ -1,4 +1,4 @@
-const CACHE_NAME='kunhua-ai-pro-v9-20260702-1';
+const CACHE='realty-ai-v11-beta2';
 const ASSETS=['./index.html?v=9.0.0','./style.css?v=9.0.0','./script.js?v=9.0.0','./manifest.webmanifest','./card/kunhua.html','./card/shiyun.html','./card/team.html','./assets/kunhua.jpg?v=9','./assets/shiyun.jpg?v=9','./assets/qr-kunhua.jpg?v=9','./assets/qr-shiyun.jpg?v=9','./assets/card-kunhua.jpg?v=9','./assets/card-shiyun.jpg?v=9','./assets/card-team.jpg?v=9','./icons/icon-192.png','./icons/icon-512.png'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS).catch(()=>null)))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>k!==CACHE_NAME?caches.delete(k):null))).then(()=>self.clients.claim()))});
